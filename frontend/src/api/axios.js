@@ -41,7 +41,7 @@
 import axios from 'axios';
 
 // Base URL for API - update in .env as VITE_API_URL
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'https://studybox-1-t0df.onrender.com';
 
 // Create Axios instance
 const axiosInstance = axios.create({
