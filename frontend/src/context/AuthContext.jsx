@@ -114,7 +114,8 @@
 
 import { createContext, useContext, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+//import axios from 'axios';
+import axiosInstance from '@/lib/axios';
 import { toast } from 'sonner';
 
 const AuthContext = createContext();
@@ -139,7 +140,8 @@ export const AuthProvider = ({ children }) => {
       try {
         const parsedUser = JSON.parse(storedUser);
         setUser(parsedUser);
-        axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+       //axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+          axiosInstance.defaults.headers.common['Authorization'] = `Bearer ${token}`;
       } catch (err) {
         console.error('Failed to parse stored user:', err);
         localStorage.removeItem('user'); // clear invalid data
@@ -150,10 +152,14 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (email, password) => {
     try {
-      const response = await axios.post('/api/auth/login', {
-        email: email.trim().toLowerCase(),
-        password: password.trim(),
-      });
+      // const response = await axios.post('/api/auth/login', {
+      //   email: email.trim().toLowerCase(),
+      //   password: password.trim(),
+      // });
+       const response = await axiosInstance.post('/api/auth/login', {
+  email: email.trim().toLowerCase(),
+  password: password.trim(),
+}); 
 
       const data = response.data?.data || response.data;
       const token = data?.token;
@@ -163,7 +169,8 @@ export const AuthProvider = ({ children }) => {
 
       localStorage.setItem('token', token);
       localStorage.setItem('user', JSON.stringify(userData));
-      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+      //axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+        axiosInstance.defaults.headers.common['Authorization'] = `Bearer ${token}`;
 
       setUser(userData);
       toast.success('Login successful!');
@@ -179,8 +186,8 @@ export const AuthProvider = ({ children }) => {
 
   const signup = async (payload) => {
     try {
-      const response = await axios.post('/api/auth/signup', payload);
-
+      //const response = await axios.post('/api/auth/signup', payload);
+      const response = await axiosInstance.post('/api/auth/signup', payload);
       const data = response.data?.data || response.data;
       const token = data?.token;
       const userData = data?.user;
@@ -189,7 +196,8 @@ export const AuthProvider = ({ children }) => {
 
       localStorage.setItem('token', token);
       localStorage.setItem('user', JSON.stringify(userData));
-      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+      //axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+        axiosInstance.defaults.headers.common['Authorization'] = `Bearer ${token}`;
 
       setUser(userData);
       toast.success('Registration successful!');
@@ -206,7 +214,8 @@ export const AuthProvider = ({ children }) => {
   const logout = () => {
     localStorage.removeItem('token');
     localStorage.removeItem('user');
-    delete axios.defaults.headers.common['Authorization'];
+    //delete axios.defaults.headers.common['Authorization'];
+      delete axiosInstance.defaults.headers.common['Authorization'];
     setUser(null);
     toast.success('Logged out successfully');
     navigate('/'); // ✅ Redirect to landing page instead of login
