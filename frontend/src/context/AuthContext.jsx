@@ -115,7 +115,7 @@
 import { createContext, useContext, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 //import axios from 'axios';
-import axiosInstance from '@/lib/axios';
+import axiosInstance from '../lib/axios';
 import { toast } from 'sonner';
 
 const AuthContext = createContext();
